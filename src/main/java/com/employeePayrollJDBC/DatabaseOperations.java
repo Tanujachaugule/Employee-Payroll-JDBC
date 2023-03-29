@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.sql.*;
 public class DatabaseOperations {
     public Connection getConnection() throws SQLException{
-        String jdbcURL = "jdbc:mysql://localhost:3306/employee_payroll?allowPublicKeyRetrieval=true&useSSL=false";
+        String jdbcURL = "jdbc:mysql://localhost:3306/payroll_service?allowPublicKeyRetrieval=true&useSSL=false";
         String userName = "root";
         String password = "Tanuja@99";
         Connection connection;
@@ -48,7 +48,7 @@ public class DatabaseOperations {
         }
     }
 
-    //UC3 - Updating the salary
+    //UC4 - Updating the salary and sync it with database using JDBC Prepared Statement
     public void updateBasicPay(String name, double newBasicPay){
         try {
             Connection connection = this.getConnection();
