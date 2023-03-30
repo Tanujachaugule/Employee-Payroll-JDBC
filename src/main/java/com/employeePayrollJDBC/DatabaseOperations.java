@@ -186,7 +186,7 @@ public class DatabaseOperations {
         System.out.println("The count of basic pay by gender " + gender + " is : " + count);
     }
 
-    //- Add new employee details to employee payroll table
+    //UC7 and UC8 - Add new employee details to employee payroll table
     public void addEmployee(String name, String gender, double basicPay, Date start, String phone, String address) throws Exception {
         try {
             Connection con = this.getConnection();
@@ -197,7 +197,7 @@ public class DatabaseOperations {
             double taxablePay = basicPay - deduction;
             double tax = (taxablePay * 0.1);
             double netPay = (basicPay - tax);
-            preparedStatement.setInt(1,5);
+            preparedStatement.setInt(1,4);
             preparedStatement.setString(2,name);
             preparedStatement.setString(3,gender);
             preparedStatement.setDouble(4,basicPay);
@@ -223,6 +223,26 @@ public class DatabaseOperations {
         }
     }
 
+    //UC12 - Delete employee details
+    public void removeEmployee(int id){
+        try {
+            Connection con = this.getConnection();
+            String query = "DELETE FROM employeePayroll WHERE ID = ?";
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setInt(1, id);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Employee details  successfully deleted.");
+            } else {
+                System.out.println("Could not perform the task.");
+            }
+            con.close();
+            statement.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws Exception{
         DatabaseOperations databaseOperations = new DatabaseOperations();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -231,7 +251,7 @@ public class DatabaseOperations {
             System.out.println("*****************************************");
             System.out.println("Enter your choice:");
             System.out.println("\n1. Display employee details\n2. Update basic pay\n3. Display employee in date range\n4. Database Operations\n" +
-                    "5. Add new employee\n6. Exit");
+                    "5. Add new employee\n6. Delete employee details\n7. Exit");
             flag = Integer.parseInt(bufferedReader.readLine());
             switch (flag){
                 case 1: databaseOperations.displayDetails();
@@ -289,10 +309,13 @@ public class DatabaseOperations {
                     String address = bufferedReader.readLine();
                     databaseOperations.addEmployee(nameEntry,gender,basicPay,dateStart,phone,address);
                     break;
-                case 6: flag = 0;
+                case 6: System.out.print("Enter the id of employee to delete: ");
+                    int employeeId = Integer.parseInt(bufferedReader.readLine());
+                    databaseOperations.removeEmployee(employeeId);
+                    break;
+                case 7: flag = 0;
                     break;
             }
         }
     }
-
 }
