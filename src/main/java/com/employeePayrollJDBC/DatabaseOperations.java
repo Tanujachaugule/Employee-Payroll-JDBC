@@ -186,7 +186,7 @@ public class DatabaseOperations {
         System.out.println("The count of basic pay by gender " + gender + " is : " + count);
     }
 
-    //Add new employee details
+    //- Add new employee details to employee payroll table
     public void addEmployee(String name, String gender, double basicPay, Date start, String phone, String address) throws Exception {
         try {
             Connection con = this.getConnection();
@@ -294,4 +294,5 @@ public class DatabaseOperations {
             }
         }
     }
+
 }
